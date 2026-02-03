@@ -49,10 +49,13 @@ for (const category in categories) {
     const div = document.createElement("div");
     div.className = "video";
 
-   div.innerHTML = `
+  div.innerHTML = `
   <span class="heart">❤️</span>
-  <div class="preview" data-id="${id}"></div>
+  <div class="preview" data-id="${id}"
+       style="background-image:url('https://img.youtube.com/vi/${id}/hqdefault.jpg')">
+  </div>
 `;
+
 
     div.querySelector(".heart").addEventListener("click", (e) => {
       e.stopPropagation();
@@ -75,9 +78,6 @@ modal.addEventListener("click", (e) => {
     modalVideo.src = "";
   }
 });
-document.addEventListener("mouseover", (e) => {
-  const preview = e.target.closest(".preview");
-  if (!preview) return;
 
   const id = preview.dataset.id;
 
@@ -93,11 +93,34 @@ document.addEventListener("mouseover", (e) => {
   }
 });
 
-document.addEventListener("mouseout", (e) => {
-  const preview = e.target.closest(".preview");
-  if (!preview) return;
+
 
   preview.innerHTML = "";
 });
+document.addEventListener("mouseenter", (e) => {
+  const preview = e.target.closest(".preview");
+  if (!preview) return;
+
+  const id = preview.dataset.id;
+
+  preview.innerHTML = `
+    <iframe
+      src="https://www.youtube.com/embed/${id}?autoplay=1&mute=1&controls=0&modestbranding=1"
+      allow="autoplay"
+      style="width:100%; height:100%;"
+    ></iframe>
+  `;
+}, true);
+
+document.addEventListener("mouseleave", (e) => {
+  const preview = e.target.closest(".preview");
+  if (!preview) return;
+
+  const id = preview.dataset.id;
+
+  preview.innerHTML = "";
+  preview.style.backgroundImage =
+    \`url('https://img.youtube.com/vi/\${id}/hqdefault.jpg')\`;
+}, true);
 
 renderMyList();
