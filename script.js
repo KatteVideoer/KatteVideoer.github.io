@@ -55,65 +55,61 @@ function openModal(id) {
 }
 
 // ---------------------------
-// GENERER VIDEO-RADER
+// FUNKSJON: LAG VIDEO-RADER
 // ---------------------------
-for (const category in categories) {
-  const row = document.getElementById(category);
+function createVideoRow(categoryId, videos) {
+  const row = document.getElementById(categoryId);
 
-  categories[category].forEach(id => {
+  videos.forEach(id => {
     const div = document.createElement("div");
     div.className = "video";
 
-    // HTML med heart + preview
+    // HTML: heart + preview thumbnail
     div.innerHTML = `
       <span class="heart">❤️</span>
-      <div 
-        class="preview" 
-        data-id="${id}" 
-        style="background-image:url('https://img.youtube.com/vi/${id}/hqdefault.jpg')">
+      <div class="preview" data-id="${id}" 
+           style="background-image:url('https://img.youtube.com/vi/${id}/hqdefault.jpg')">
       </div>
     `;
 
-    // Heart-funksjon (favoritter)
+    // Heart click
     div.querySelector(".heart").addEventListener("click", (e) => {
-      e.stopPropagation(); // viktig, hindrer modal åpning
+      e.stopPropagation(); // hindrer modal
       addToMyList(id);
     });
 
-    // Klikk på video → modal
-    div.addEventListener("click", () => openModal(id));
+    // Klikk på preview → modal
+    div.querySelector(".preview").addEventListener("click", () => openModal(id));
 
-    // Legg til i raden
+    // Hover preview
+    div.querySelector(".preview").addEventListener("mouseenter", (e) => {
+      const preview = e.currentTarget;
+      preview.innerHTML = `
+        <iframe 
+          src="https://www.youtube.com/embed/${id}?autoplay=1&mute=1&controls=0&modestbranding=1" 
+          frameborder="0" 
+          allow="autoplay" 
+          style="width:100%; height:100%; border:none; border-radius:8px;">
+        </iframe>
+      `;
+    });
+
+    div.querySelector(".preview").addEventListener("mouseleave", (e) => {
+      const preview = e.currentTarget;
+      preview.innerHTML = "";
+      preview.style.backgroundImage = `url('https://img.youtube.com/vi/${id}/hqdefault.jpg')`;
+    });
+
     row.appendChild(div);
   });
 }
 
 // ---------------------------
-// HOVER PREVIEW (Netflix-style)
+// OPPRETT ALLE KATEGORIER
 // ---------------------------
-document.addEventListener("mouseenter", function (e) {
-  const preview = e.target.closest(".preview");
-  if (!preview) return;
-
-  const id = preview.dataset.id;
-
-  preview.innerHTML = `
-    <iframe
-      src="https://www.youtube.com/embed/${id}?autoplay=1&mute=1&controls=0&modestbranding=1"
-      allow="autoplay"
-      style="width:100%; height:100%; border:none; border-radius:8px;">
-    </iframe>
-  `;
-}, true);
-
-document.addEventListener("mouseleave", function (e) {
-  const preview = e.target.closest(".preview");
-  if (!preview) return;
-
-  const id = preview.dataset.id;
-  preview.innerHTML = "";
-  preview.style.backgroundImage = `url('https://img.youtube.com/vi/${id}/hqdefault.jpg')`;
-}, true);
+for (const category in categories) {
+  createVideoRow(category, categories[category]);
+}
 
 // ---------------------------
 // MODAL CLOSE
