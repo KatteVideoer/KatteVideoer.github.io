@@ -75,5 +75,29 @@ modal.addEventListener("click", (e) => {
     modalVideo.src = "";
   }
 });
+document.addEventListener("mouseover", (e) => {
+  const preview = e.target.closest(".preview");
+  if (!preview) return;
+
+  const id = preview.dataset.id;
+
+  if (!preview.querySelector("iframe")) {
+    preview.innerHTML = `
+      <iframe
+        src="https://www.youtube.com/embed/${id}?autoplay=1&mute=1&controls=0&modestbranding=1"
+        frameborder="0"
+        allow="autoplay"
+        style="width:100%; height:100%;"
+      ></iframe>
+    `;
+  }
+});
+
+document.addEventListener("mouseout", (e) => {
+  const preview = e.target.closest(".preview");
+  if (!preview) return;
+
+  preview.innerHTML = "";
+});
 
 renderMyList();
