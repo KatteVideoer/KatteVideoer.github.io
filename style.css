@@ -132,3 +132,16 @@ footer {
   cursor: pointer;
   color: white;
 }
+.heart {
+  position: absolute;
+  top: 8px;
+  right: 10px;
+  font-size: 22px;
+  cursor: pointer;
+  color: white;
+  text-shadow: 0 0 5px black;
+}
+
+.video {
+  position: relative;
+}
