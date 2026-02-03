@@ -11,10 +11,14 @@ const categories = {
   ],
   cute: [
     "1Ne1hqOXKKI",
-    "9bZkp7q19f0",
-    "y8Kyi0WNg40"
+    "y8Kyi0WNg40",
+    "9bZkp7q19f0"
   ]
 };
+
+const modal = document.getElementById("modal");
+const modalVideo = document.getElementById("modalVideo");
+const closeModal = document.getElementById("closeModal");
 
 for (const category in categories) {
   const row = document.getElementById(category);
@@ -24,9 +28,26 @@ for (const category in categories) {
     div.className = "video";
 
     div.innerHTML = `
-      <iframe src="https://www.youtube.com/embed/${id}" allowfullscreen></iframe>
+      <iframe src="https://www.youtube.com/embed/${id}" loading="lazy"></iframe>
     `;
+
+    div.addEventListener("click", () => {
+      modal.classList.remove("hidden");
+      modalVideo.src = `https://www.youtube.com/embed/${id}?autoplay=1`;
+    });
 
     row.appendChild(div);
   });
 }
+
+closeModal.addEventListener("click", () => {
+  modal.classList.add("hidden");
+  modalVideo.src = "";
+});
+
+modal.addEventListener("click", (e) => {
+  if (e.target === modal) {
+    modal.classList.add("hidden");
+    modalVideo.src = "";
+  }
+});
