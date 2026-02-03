@@ -49,10 +49,10 @@ for (const category in categories) {
     const div = document.createElement("div");
     div.className = "video";
 
-    div.innerHTML = `
-      <span class="heart">❤️</span>
-      <iframe src="https://www.youtube.com/embed/${id}" loading="lazy"></iframe>
-    `;
+   div.innerHTML = `
+  <span class="heart">❤️</span>
+  <div class="preview" data-id="${id}"></div>
+`;
 
     div.querySelector(".heart").addEventListener("click", (e) => {
       e.stopPropagation();
